@@ -1,0 +1,9 @@
+<h2>Gamez Leaderboard</h2>
+
+<ul>
+  <% @users.each do |user| %>
+  <li>
+    <%= user.username %>
+  </li>
+  <% end %>
+</ul>

@@ -1,0 +1,10 @@
+<h2>Update your gamez account:</h2>
+
+<form action="/users" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <input type="text" name="user[username]" placeholder="Enter a username..." value="<%= @user.username %>"></br>
+  <input type="password" name="current_password" placeholder="Enter current password..."></br>
+  <input type="password" name="new_password" placeholder="(Optional) Enter new password..."></br>
+  <input type="email" name="user[email]" placeholder="Enter your email..." value="<%= @user.email %>"></br>
+  <input type="submit" value="Sign Up!">
+</form>

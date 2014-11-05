@@ -1,0 +1,31 @@
+<div class="main-navbar">
+  <ul>
+    <li>
+      <a href="/">Home</a>
+    </li>
+    <li>
+      <a href="/users">Leaderboard</a>
+    </li>
+
+    <% if current_user %>
+    <li>
+      <form action="/users/<%= current_user.id %>" method="get">
+        <input type="submit" value="Profile">
+      </form>
+    </li>
+    <li>
+      <form action="/sessions" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" value="Logout">
+      </form>
+    </li>
+    <% else %>
+    <li>
+      <a href="/users/new">Sign Up</a>
+    </li>
+    <li>
+      <a href="/sessions/new">Login</a>
+    </li>
+    <% end %>
+  </ul>
+</div>
