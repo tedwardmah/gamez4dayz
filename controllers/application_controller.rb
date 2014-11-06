@@ -15,4 +15,8 @@ class ApplicationController < Sinatra::Base
     erb :index
   end
 
+  get '/games' do
+    erb :games
+  end
+
 end

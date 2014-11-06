@@ -3,11 +3,13 @@
     <li>
       <a href="/">Home</a>
     </li>
+    <% if current_user %>
+    <li>
+      <a href="/games">Gamez</a>
+    </li>
     <li>
       <a href="/users">Leaderboard</a>
     </li>
-
-    <% if current_user %>
     <li>
       <form action="/users/<%= current_user.id %>" method="get">
         <input type="submit" value="Profile">
