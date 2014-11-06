@@ -12,7 +12,7 @@ class HangmanController < ApplicationController
         user_id: current_user.id,
         })
     end
-    erb :'hangman/game'
+    erb :'/games/hangman'
   end
 
   post '/:id/guess' do
@@ -22,7 +22,6 @@ class HangmanController < ApplicationController
     word_display = game.game_completed ? game.secret_word : game.display_word
     {
       new_display: word_display,
-      guessed_letters: game.guessed_letters, #this may not be necessary
       tries: game.tries,
       last_guess_correct: game.last_guess_correct,
       game_completed: game.game_completed,
