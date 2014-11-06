@@ -65,7 +65,7 @@ class HangmanGame < ActiveRecord::Base
   private
 
   def new_word(word_length=14)
-    pattern = /^.{5, #{word_length}}$/
+    pattern = /^.{5,#{word_length}}$/
     File.foreach('models/wordz.txt').grep(pattern).sample.downcase.chomp
   end
 

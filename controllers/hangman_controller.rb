@@ -1,5 +1,9 @@
 class HangmanController < ApplicationController
 
+  before do
+    authenticate!
+  end
+
   get '/' do
     if game_in_progress = HangmanGame.find_by(user_id: current_user.id, game_completed: false)
       @game = game_in_progress
