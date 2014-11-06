@@ -4,10 +4,8 @@ class HangmanController < ApplicationController
     if game_in_progress = HangmanGame.find_by(user_id: current_user.id, game_completed: false)
       @game = game_in_progress
     else
-      secret_word = HangmanGame.get_new_word(5)
       @game = HangmanGame.create({
         user_id: current_user.id,
-        secret_word: secret_word,
         })
     end
     erb :'hangman/game'

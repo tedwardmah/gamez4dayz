@@ -18,11 +18,7 @@ class HangmanGame < ActiveRecord::Base
     unrevealed_letters.each do |letter|
       display_word.gsub!(letter, "_")
     end
-
-    self.secret_word.gsub
-
-
-    display_word.chars.join(' ')
+    display_word
   end
 
   def guess_letter(guess)

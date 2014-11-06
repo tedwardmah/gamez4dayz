@@ -49,3 +49,22 @@ body {
 .main-navbar input[type='submit']:focus {
   outline: none;
 }
+
+/********* hangman stuff ***********/
+
+.hangman-word-display {
+  font-size: 2em;
+  line-height: 2em;
+  letter-spacing: .5em;
+}
+
+
+
+
+
+
+
+
+
+
+
