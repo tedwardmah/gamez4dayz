@@ -1,12 +1,12 @@
-<div class="hangmain-container">
-  <h2>Hangman!</h2>
+<div class="hangman-container">
 
-  <h3 class="hangman-word-display"><%= @game.display_word %></h3>
-  <h3 class="hangman-tries-display">Tries remaining: <%= @game.tries %></h3>
+  <div class="hangman-col-1">
+    <h3 class="hangman-word-display"><%= @game.display_word %></h3>
 
-
-  <form action="/hangman/<%= @game.id %>/guess" method="post" class="hangman-form">
-    <input type="text" name="guess" placeholder="Pick a letter..." class="hangman-guess">
-    <input type="submit" value="Guess" class="hangman-submit">
-  </form>
+    <form action="/hangman/<%= @game.id %>/guess" method="post" class="hangman-form">
+      <input type="text" name="guess" class="hangman-guess" size="1">
+      <input type="submit" value="Guess" class="hangman-submit">
+    </form>
+  </div>
+  <img src="/images/hangman/hangman_6.png" alt="hangman image" class="hangman-img">
 </div>

@@ -15,8 +15,9 @@ class HangmanController < ApplicationController
     content_type :json
     game = HangmanGame.find(params[:id])
     game.guess_letter(params[:guess])
+    word_display = game.game_completed ? game.secret_word : game.display_word
     {
-      new_display: game.display_word,
+      new_display: word_display,
       guessed_letters: game.guessed_letters, #this may not be necessary
       tries: game.tries,
       last_guess_correct: game.last_guess_correct,
