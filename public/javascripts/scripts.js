@@ -1,7 +1,18 @@
+function updateHangmanHTML(new_word_display, tries_remaining){
+  $hangmanWord = $($(".hangman-word-display")[0]);
+  $hangmanTries = $($(".hangman-tries-display")[0]);
+  $hangmanWord.text(new_word_display);
+  $hangmanTries.text(("Tries remaining: " + tries_remaining));
+  $(".hangman-guess").val('');
+}
+
+function hangmanGameOver(win_boolean){
+
+}
+
 
 $(function(){
   console.log("Hey there stud ;)")
-
   // guess functionality
   $(".hangman-submit").on('click', function(e){
     e.preventDefault();
@@ -14,7 +25,7 @@ $(function(){
         guess: guessedLetter,
       },
       success: function(data) {
-        console.log(data);
+        updateHangmanHTML(data.new_display, data.tries);
       }
     });
 

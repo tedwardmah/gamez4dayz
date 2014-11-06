@@ -1,11 +1,12 @@
 class HangmanGame < ActiveRecord::Base
   belongs_to :user
 
-  def self.get_new_word(word_length)
-    full_word_list = File.read(File.dirname(__FILE__) + '/wordz.txt')
-    regexp = '\b\w{' + word_length.to_s + '}\b'
-    full_word_list.scan(Regexp.new(regexp)).sample
+  before_create :assign_secret_word
+
+  def assign_secret_word
+    self.secret_word ||= new_word
   end
+
 
   def display_word
     display_word = self.secret_word
@@ -17,6 +18,10 @@ class HangmanGame < ActiveRecord::Base
     unrevealed_letters.each do |letter|
       display_word.gsub!(letter, "_")
     end
+
+    self.secret_word.gsub
+
+
     display_word.chars.join(' ')
   end
 
@@ -42,6 +47,7 @@ class HangmanGame < ActiveRecord::Base
           })
       end
     end
+    self.completed?
   end
 
   def completed?
@@ -58,6 +64,13 @@ class HangmanGame < ActiveRecord::Base
         game_completed: true,
         })
     end
+  end
+
+  private
+
+  def new_word(word_length=5)
+    pattern = /^.{#{word_length}}$/
+    File.foreach('models/wordz.txt').grep(pattern).sample.downcase.chomp
   end
 
 end
