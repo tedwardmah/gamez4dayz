@@ -22,7 +22,7 @@ class HangmanController < ApplicationController
       tries: game.tries,
       last_guess_correct: game.last_guess_correct,
       game_completed: game.game_completed,
-      win: true,
+      win: game.win,
       }.to_json
   end
 

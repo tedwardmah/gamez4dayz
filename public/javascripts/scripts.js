@@ -27,7 +27,7 @@ function updateHangmanImg(tries_remaining){
 function hangmanGameOver(win_boolean){
   $hangmanTries.remove();
   $hangmanForm.remove();
-  if ( win_boolean === 'true' ){
+  if (win_boolean){
     $gameResultMessage = $('<h2>').text("You win!!!");
   } else {
     $gameResultMessage = $('<h2>').text("You lose dummy!!!");
@@ -67,10 +67,11 @@ $(function(){
         guess: guessedLetter,
       },
       success: function(data) {
+        console.log(data);
         updateHangmanHTML(data.new_display, data.tries);
         updateHangmanImg(data.tries);
-        if ( data.game_completed ) {
-          hangmanGameOver( data.win );
+        if (data.game_completed) {
+          hangmanGameOver(data.win);
         }
       }
     });
