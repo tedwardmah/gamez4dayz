@@ -1,0 +1,11 @@
+<h2>Hangman!</h2>
+
+<h3><%= @game.id %></h3>
+<h3><%= @game.display_word %></h3>
+<h3>Tries remaining: <%= @game.tries %></h3>
+
+
+<form action="/hangman/<%= @game.id %>/guess" method="post" class="hangman-form">
+  <input type="text" name="guess" placeholder="Pick a letter..." class="hangman-guess">
+  <input type="submit" value="Guess" class="hangman-submit">
+</form>
