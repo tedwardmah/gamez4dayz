@@ -54,13 +54,16 @@ function buildGameResultNavbar(){
 
 // tic-tac-toe **************************************************
 
-function renderTictactoeBoard(board_state){
+function updateTictactoeBoard(board_state){
   board_state_characters = board_state.split('');
   $('.tictactoe-space').each(function(space_index, space){
     $(space.children[0]).text(board_state_characters[space_index]);
   });
 }
 
+function updateTictactoeTurn(player1_turn) {
+  $('#tictactoe-player-move').text(player1_turn ? "X's turn" : "O's turn")
+}
 
 // after erythang is loaded...
 
@@ -103,7 +106,8 @@ $(function(){
         space_num: clickedSpace,
       },
       success: function(data) {
-        renderTictactoeBoard(data.new_board_state);
+        updateTictactoeBoard(data.new_board_state);
+        updateTictactoeTurn(data.player1_turn);
       }
     })
   }); // end of tictactoe move
