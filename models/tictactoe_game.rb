@@ -1,4 +1,4 @@
-class TicTacToeGame < ActiveRecord::Base
+class TictactoeGame < ActiveRecord::Base
   belongs_to :user
 
   def check_win(player_combo)

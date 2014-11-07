@@ -55,7 +55,7 @@ $(function(){
   console.log("Hey there stud ;)");
   setHangmanConstants();
 
-  // guess functionality
+  // guess functionality for hangman
   $(".hangman-submit").on('click', function(e){
     e.preventDefault();
     var guessedLetter = $(".hangman-guess").val().toLowerCase();
@@ -75,7 +75,6 @@ $(function(){
         }
       }
     });
-
   }); // end of guess function
 
 
