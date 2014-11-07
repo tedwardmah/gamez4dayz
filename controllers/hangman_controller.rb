@@ -23,7 +23,7 @@ class HangmanController < ApplicationController
     {
       new_display: word_display,
       tries: game.tries,
-      last_guess_correct: game.last_guess_correct,
+      last_guess_correct: game.last_guess_correct, #i think this is unnecessary
       game_completed: game.game_completed,
       win: game.win,
       }.to_json

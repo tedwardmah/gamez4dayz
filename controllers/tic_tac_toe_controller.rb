@@ -4,7 +4,6 @@ class TicTacToeController < ApplicationController
     authenticate!
   end
 
-
   get '/' do
     erb :'games/tictactoe'
   end

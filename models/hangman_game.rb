@@ -29,8 +29,8 @@ class HangmanGame < ActiveRecord::Base
         last_guess_correct: false,
         })
     else # add the letter to guessed letters...
-      new_guessed_letters = self.guessed_letters + guess
-      self.update({guessed_letters: new_guessed_letters})
+      new_guessed_letter = self.guessed_letters + guess
+      self.update({guessed_letters: new_guessed_letter})
       # ...and check to see if the guess is in the word
       if self.secret_word.include?(guess)
         self.update({
