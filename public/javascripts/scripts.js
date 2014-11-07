@@ -1,7 +1,11 @@
+// Global stuffffffff
+
 $hangmanContainer = null;
 $hangmanWord = null;
 $hangmanTries = null;
 $hangmanForm = null;
+
+// Hangman stufffffff **************************************************
 
 function setHangmanConstants(){
   $hangmanContainer = $($('.hangman-container')[0]);
@@ -9,8 +13,6 @@ function setHangmanConstants(){
   $hangmanTries = $($(".hangman-tries-display")[0]);
   $hangmanForm = $($(".hangman-form")[0]);
 }
-
-
 
 function updateHangmanHTML(new_word_display, tries_remaining){
   $hangmanWord.text(new_word_display);
@@ -50,6 +52,17 @@ function buildGameResultNavbar(){
   $hangmanContainer.append($gameResultUl);
 }
 
+// tic-tac-toe **************************************************
+
+function renderTictactoeBoard(board_state){
+  board_state_characters = board_state.split('');
+  $('.tictactoe-space').each(function(space_index, space){
+    $(space.children[0]).text(board_state_characters[space_index]);
+  });
+}
+
+
+// after erythang is loaded...
 
 $(function(){
   console.log("Hey there stud ;)");
@@ -67,7 +80,6 @@ $(function(){
         guess: guessedLetter,
       },
       success: function(data) {
-        console.log(data);
         updateHangmanHTML(data.new_display, data.tries);
         updateHangmanImg(data.tries);
         if (data.game_completed) {
@@ -75,7 +87,32 @@ $(function(){
         }
       }
     });
-  }); // end of guess function
+  }); // end of hangman guess function
 
+  //move-making functionality for tictactoe
+  $('.tictactoe-space').on('click', function(e){
+    $selectedSpace = $($(this));
+    $selectedP = $($selectedSpace.children()[0]);
+    var clickedSpace = $selectedP.text();
+    var gameID = $("#tictactoe-game-id").attr("value");
+    $.ajax({
+      url: ('/tictactoe/' + gameID + "/move"),
+      method: 'POST',
+      dataType: "json",
+      data: {
+        space_num: clickedSpace,
+      },
+      success: function(data) {
+        renderTictactoeBoard(data.new_board_state);
+      }
+    })
+  }); // end of tictactoe move
 
 });
+
+
+
+
+
+
+

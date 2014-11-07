@@ -12,18 +12,20 @@ class TicTacToeController < ApplicationController
         user_id: current_user.id
         })
     end
-    binding.pry
     @game_display = @game.render_board_display
     erb :'games/tictactoe'
   end
 
-  get '/:id/move' do
+  post '/:id/move' do
     content_type :json
     game = TictactoeGame.find(params[:id])
-
-
+    game.make_move(params[:space_num])
+    game.check_win
     {
-      game_id: game.id
+      new_board_state: game.board_state,
+      game_completed: game.game_completed,
+      winner: game.winner,
+      player1_turn: game.player1_turn,
       }.to_json
   end
 

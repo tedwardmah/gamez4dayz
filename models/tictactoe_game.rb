@@ -17,24 +17,19 @@ class TictactoeGame < ActiveRecord::Base
   end
 
   def render_board_display
-    board_display = "012345678"
-    self.x_moves.chars.each do |space_number|
-      board_display.gsub!(space_number, "X")
-    end
-    self.o_moves.chars.each do |space_number|
-      board_display.gsub!(space_number, "O")
-    end
-    board_display.chars.each_slice(3).map{|x| x}
+    self.board_state.chars.each_slice(3).map{|x| x}
   end
 
   def make_move(space_num)
     if player1_turn
       self.update({
+        board_state: (self.board_state.gsub(space_num, "X")),
         x_moves: (self.x_moves + space_num.to_s),
         player1_turn: false,
         })
     else
       self.update({
+        board_state: (self.board_state.gsub(space_num, "O")),
         o_moves: (self.o_moves + space_num.to_s),
         player1_turn: true,
         })
