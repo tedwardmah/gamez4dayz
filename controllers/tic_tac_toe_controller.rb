@@ -12,6 +12,8 @@ class TicTacToeController < ApplicationController
         user_id: current_user.id
         })
     end
+    binding.pry
+    @game_display = @game.render_board_display
     erb :'games/tictactoe'
   end
 

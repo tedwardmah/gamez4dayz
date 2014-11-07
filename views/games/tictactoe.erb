@@ -1,21 +1,16 @@
 <div class="tictactoe-container">
   <h2>Game Id: <%= @game.id %></h2>
+  <h2>Move: <%= @game.player1_turn ? "X" : "O" %></h2>
   <div class="tictactoe-game-board">
+
+    <% @game_display.each do |row| %>
     <div class="tictactoe-row">
-      <div class="tictactoe-space"><p>0</p></div>
-      <div class="tictactoe-space"><p>1</p></div>
-      <div class="tictactoe-space"><p>2</p></div>
+      <% row.each do |space_num| %>
+      <div class="tictactoe-space"><p><%= space_num %></p></div>
+      <% end %>
     </div>
-    <div class="tictactoe-row">
-      <div class="tictactoe-space"><p>3</p></div>
-      <div class="tictactoe-space"><p>4</p></div>
-      <div class="tictactoe-space"><p>5</p></div>
-    </div>
-    <div class="tictactoe-row">
-      <div class="tictactoe-space"><p>6</p></div>
-      <div class="tictactoe-space"><p>7</p></div>
-      <div class="tictactoe-space"><p>8</p></div>
-    </div>
+    <% end %>
+
   </div>
   
 </div>

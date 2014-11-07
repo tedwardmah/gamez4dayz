@@ -2,6 +2,7 @@ class CreateTictactoeGamesTable < ActiveRecord::Migration
   def change
     create_table :tictactoe_games do |t|
       t.references    :user
+      t.string        :board_state,     :default => "012345678"
       t.string        :x_moves,         :default => ''
       t.string        :o_moves,         :default => ''
       t.boolean       :game_completed,  :default => false

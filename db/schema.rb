@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141107155416) do
 
   create_table "tictactoe_games", force: true do |t|
     t.integer  "user_id"
+    t.string   "board_state",    default: "012345678"
     t.string   "x_moves",        default: ""
     t.string   "o_moves",        default: ""
     t.boolean  "game_completed", default: false
