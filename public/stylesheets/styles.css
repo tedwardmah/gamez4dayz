@@ -3,6 +3,10 @@ body {
   background-color: lightgrey;
 }
 
+.content-container {
+  text-align: center;
+}
+
 .main-navbar {
   margin: 0;
   text-align: center;
@@ -49,6 +53,28 @@ body {
 
 .main-navbar input[type='submit']:focus {
   outline: none;
+}
+
+.gamez-menu ul {
+  list-style-type: none;
+}
+
+.gamez-menu li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.gamez-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color:  #1abc9c;
+  border: 2px solid #1abc9c;
+  border-radius: 5px;
+}
+
+.gamez-menu a:hover {
+  border: 2px solid white;
 }
 
 /********* hangman stuff ***********/
@@ -111,7 +137,7 @@ body {
 }
 
 .tictactoe-game-board {
-/*  background-color: blue;*/
+  /*  background-color: blue;*/
 }
 
 .tictactoe-space {
