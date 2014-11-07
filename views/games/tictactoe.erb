@@ -6,8 +6,8 @@
 
     <% @game_display.each do |row| %>
     <div class="tictactoe-row">
-      <% row.each do |space_num| %>
-      <div class="tictactoe-space"><p><%= space_num %></p></div>
+      <% row.each do |space_char| %>
+      <div class="tictactoe-space <%= /\d/.match(space_char) ? "hidden" : "" %>"><p><%= space_char %></p></div>
       <% end %>
     </div>
     <% end %>

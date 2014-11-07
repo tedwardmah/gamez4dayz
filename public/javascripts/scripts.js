@@ -62,7 +62,7 @@ function updateTictactoeBoard(board_state){
 }
 
 function updateTictactoeTurn(player1_turn) {
-  $('#tictactoe-player-move').text(player1_turn ? "X's turn" : "O's turn")
+  $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move")
 }
 
 // after erythang is loaded...
@@ -94,8 +94,8 @@ $(function(){
 
   //move-making functionality for tictactoe
   $('.tictactoe-space').on('click', function(e){
-    $selectedSpace = $($(this));
-    $selectedP = $($selectedSpace.children()[0]);
+    var $selectedSpace = $(this);
+    var $selectedP = $($selectedSpace.children()[0]);
     var clickedSpace = $selectedP.text();
     var gameID = $("#tictactoe-game-id").attr("value");
     $.ajax({
@@ -108,8 +108,12 @@ $(function(){
       success: function(data) {
         updateTictactoeBoard(data.new_board_state);
         updateTictactoeTurn(data.player1_turn);
+        var newText = $($('.tictactoe-space')[clickedSpace].children[0]).text()
+        if (newText.search(/\d/) < 0){
+          $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
+        }
       }
-    })
+    });
   }); // end of tictactoe move
 
 });

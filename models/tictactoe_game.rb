@@ -21,18 +21,20 @@ class TictactoeGame < ActiveRecord::Base
   end
 
   def make_move(space_num)
-    if player1_turn
-      self.update({
-        board_state: (self.board_state.gsub(space_num, "X")),
-        x_moves: (self.x_moves + space_num.to_s),
-        player1_turn: false,
-        })
-    else
-      self.update({
-        board_state: (self.board_state.gsub(space_num, "O")),
-        o_moves: (self.o_moves + space_num.to_s),
-        player1_turn: true,
-        })
+    if space_num != "X" && space_num != "O"
+      if player1_turn
+        self.update({
+          board_state: (self.board_state.gsub(space_num, "X")),
+          x_moves: (self.x_moves + space_num.to_s),
+          player1_turn: false,
+          })
+      else
+        self.update({
+          board_state: (self.board_state.gsub(space_num, "O")),
+          o_moves: (self.o_moves + space_num.to_s),
+          player1_turn: true,
+          })
+      end
     end
   end
 

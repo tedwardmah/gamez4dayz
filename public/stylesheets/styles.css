@@ -151,7 +151,6 @@ body {
 
 .tictactoe-game-board p {
   display: inline-block;
-  /*visibility: hidden;*/
   margin: 0;
   padding: 0;
   font-size: 3.25em;
@@ -161,6 +160,9 @@ body {
   font-weight: bold;
 }
 
+.hidden p {
+  visibility: hidden;
+}
 
 
 
