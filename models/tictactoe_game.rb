@@ -4,15 +4,15 @@ class TictactoeGame < ActiveRecord::Base
   def check_win
     player_combo = self.player1_turn ? o_moves.chars.sort.join : x_moves.chars.sort.join
     winning_combos = ["012", "345", "678", "036", "147", "258", "048", "246"]
-    winning_combos.each do |winning_combo|
-      if player_combo.scan(/#{winning_combo[0]}\d*#{winning_combo[1]}\d*#{winning_combo[2]}/).count > 0
-        # things to do if the game is over...
-        winner = self.player1_turn ? "O" : "X"
-        self.update({
-          game_completed: true,
-          winner: winner,
-          })
-      end
+    win = winning_combos.any? do |combo|
+      player_combo.scan(/#{combo[0]}\d*#{combo[1]}\d*#{combo[2]}/).count > 0
+    end
+    if win
+      winner = self.player1_turn ? "O" : "X"
+      self.update({
+        game_completed: true,
+        winner: winner,
+        })
     end
   end
 
