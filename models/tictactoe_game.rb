@@ -1,20 +1,23 @@
 class TictactoeGame < ActiveRecord::Base
   belongs_to :user
 
-  def check_win(players_moves)
-    player_combo = players_moves.chars.sort.join
+  def check_win
+    player_combo = self.player1_turn ? o_moves.chars.sort.join : x_moves.chars.sort.join
     winning_combos = ["012", "345", "678", "036", "147", "258", "048", "246"]
     winning_combos.each do |winning_combo|
       if player_combo.scan(/#{winning_combo[0]}\d*#{winning_combo[1]}\d*#{winning_combo[2]}/).count > 0
+        # things to do if the game is over...
+        winner = self.player1_turn ? "O" : "X"
         self.update({
-          win: true
+          game_completed: true,
+          winner: winner,
           })
       end
     end
   end
 
   def render_board_display
-    board_display = self.board_state
+    board_display = "012345678"
     self.x_moves.chars.each do |space_number|
       board_display.gsub!(space_number, "X")
     end
