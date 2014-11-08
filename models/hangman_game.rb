@@ -64,9 +64,9 @@ class HangmanGame < ActiveRecord::Base
 
   private
 
-  def new_word(word_length=14)
+  def new_word(word_length=10) #note: max word length in database is 14
     pattern = /^.{5,#{word_length}}$/
-    File.foreach('models/wordz.txt').grep(pattern).sample.downcase.chomp
+    File.foreach('public/wordz.txt').grep(pattern).sample.downcase.chomp
   end
 
 end
