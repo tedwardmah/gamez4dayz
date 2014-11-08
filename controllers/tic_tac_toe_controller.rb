@@ -21,11 +21,13 @@ class TicTacToeController < ApplicationController
     game = TictactoeGame.find(params[:id])
     game.make_move(params[:space_num])
     game.check_game_over
+    winning_spaces = game.get_winning_spaces if game.game_completed
     {
       new_board_state: game.board_state,
       game_completed: game.game_completed,
       winner: game.winner,
       player1_turn: game.player1_turn,
+      winning_spaces: winning_spaces
       }.to_json
   end
 

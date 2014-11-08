@@ -72,8 +72,15 @@ function handleGameOver(winner) {
   } else {
     $('#tictactoe-player-move').text(winner + " wins!")
   }
-  $tictactoeContainer = $($(".tictactoe-container")[0])
+  var $tictactoeContainer = $($(".tictactoe-container")[0])
   buildGameResultNavbar("/tictactoe", $tictactoeContainer);
+}
+
+function highlightWinningSpaces(winning_spaces){
+  var $tictactoeSpaces = $('.tictactoe-space');
+  $(winning_spaces.split('')).each(function(idx, space_index){
+    $($tictactoeSpaces[space_index]).toggleClass('highlighted')
+  });
 }
 
 // after erythang is loaded...
@@ -118,6 +125,7 @@ $(function(){
           space_num: clickedSpace,
         },
         success: function(data) {
+          console.log(data)
           updateTictactoeBoard(data.new_board_state);
           updateTictactoeTurn(data.player1_turn);
           if (clickedSpace.search(/\d/) >= 0){
@@ -126,6 +134,7 @@ $(function(){
           if (data.game_completed){
             $tictactoeGameOver = true;
             handleGameOver(data.winner);
+            highlightWinningSpaces(data.winning_spaces);
           }
         }
       });
