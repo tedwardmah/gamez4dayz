@@ -14,9 +14,8 @@ class TictactoeGame < ActiveRecord::Base
         game_completed: true,
         winner: winner,
         })
-    end
     #check for draw
-    if (self.o_moves + self.x_moves).length == 9
+    elsif (self.o_moves + self.x_moves).length == 9
       self.update({
         game_completed: true,
         winner: "Draw!",

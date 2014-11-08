@@ -36,21 +36,21 @@ function hangmanGameOver(win_boolean){
     $gameResultMessage = $('<h2>').text("You lose dummy!!!");
   }
   $hangmanContainer.append($gameResultMessage);
-  buildGameResultNavbar();
+  buildGameResultNavbar("/hangman", $hangmanContainer);
 }
 
-function buildGameResultNavbar(){
+function buildGameResultNavbar(newGameRoute, targetContainer){
   $gameResultUl = $("<ul>").attr("class", "game-result-navbar");
   //new game 'button'
   $newGameLi = $("<li>");
-  $newGameAnchor = $("<a>").attr('href', "/hangman").text("New Game");
+  $newGameAnchor = $("<a>").attr('href', newGameRoute).text("New Game");
   //back to all gamez 'button'
   $gamezLi = $("<li>");
   $gamezAnchor = $("<a>").attr('href', "/games").text("Play a different game");
   //put it all together...
   $gameResultUl.append($newGameLi.append($newGameAnchor));
   $gameResultUl.append($gamezLi.append($gamezAnchor));
-  $hangmanContainer.append($gameResultUl);
+  targetContainer.append($gameResultUl);
 }
 
 // tic-tac-toe **************************************************
@@ -64,6 +64,16 @@ function updateTictactoeBoard(board_state){
 
 function updateTictactoeTurn(player1_turn) {
   $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move")
+}
+
+function handleGameOver(winner) {
+  if (winner === "Draw!"){ 
+    $('#tictactoe-player-move').text("Draw!")
+  } else {
+    $('#tictactoe-player-move').text(winner + " wins!")
+  }
+  $tictactoeContainer = $($(".tictactoe-container")[0])
+  buildGameResultNavbar("/tictactoe", $tictactoeContainer);
 }
 
 // after erythang is loaded...
@@ -114,7 +124,8 @@ $(function(){
             $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
           }
           if (data.game_completed){
-            $tictactoeGameOver = true
+            $tictactoeGameOver = true;
+            handleGameOver(data.winner);
           }
         }
       });
