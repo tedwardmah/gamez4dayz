@@ -110,8 +110,7 @@ $(function(){
         success: function(data) {
           updateTictactoeBoard(data.new_board_state);
           updateTictactoeTurn(data.player1_turn);
-          var newText = $($('.tictactoe-space')[clickedSpace].children[0]).text()
-          if (newText.search(/\d/) < 0){
+          if (clickedSpace.search(/\d/) >= 0){
             $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
           }
           if (data.game_completed){

@@ -20,7 +20,7 @@ class TicTacToeController < ApplicationController
     content_type :json
     game = TictactoeGame.find(params[:id])
     game.make_move(params[:space_num])
-    game.check_win
+    game.check_game_over
     {
       new_board_state: game.board_state,
       game_completed: game.game_completed,
