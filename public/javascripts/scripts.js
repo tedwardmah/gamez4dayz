@@ -4,6 +4,7 @@ $hangmanContainer = null;
 $hangmanWord = null;
 $hangmanTries = null;
 $hangmanForm = null;
+$tictactoeGameOver = false
 
 // Hangman stufffffff **************************************************
 
@@ -68,7 +69,7 @@ function updateTictactoeTurn(player1_turn) {
 // after erythang is loaded...
 
 $(function(){
-  console.log("Hey there stud ;)");
+  console.log("Hey there ;)");
   setHangmanConstants();
 
   // guess functionality for hangman
@@ -94,26 +95,31 @@ $(function(){
 
   //move-making functionality for tictactoe
   $('.tictactoe-space').on('click', function(e){
-    var $selectedSpace = $(this);
-    var $selectedP = $($selectedSpace.children()[0]);
-    var clickedSpace = $selectedP.text();
-    var gameID = $("#tictactoe-game-id").attr("value");
-    $.ajax({
-      url: ('/tictactoe/' + gameID + "/move"),
-      method: 'POST',
-      dataType: "json",
-      data: {
-        space_num: clickedSpace,
-      },
-      success: function(data) {
-        updateTictactoeBoard(data.new_board_state);
-        updateTictactoeTurn(data.player1_turn);
-        var newText = $($('.tictactoe-space')[clickedSpace].children[0]).text()
-        if (newText.search(/\d/) < 0){
-          $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
+    if (!$tictactoeGameOver){
+      var $selectedSpace = $(this);
+      var $selectedP = $($selectedSpace.children()[0]);
+      var clickedSpace = $selectedP.text();
+      var gameID = $("#tictactoe-game-id").attr("value");
+      $.ajax({
+        url: ('/tictactoe/' + gameID + "/move"),
+        method: 'POST',
+        dataType: "json",
+        data: {
+          space_num: clickedSpace,
+        },
+        success: function(data) {
+          updateTictactoeBoard(data.new_board_state);
+          updateTictactoeTurn(data.player1_turn);
+          var newText = $($('.tictactoe-space')[clickedSpace].children[0]).text()
+          if (newText.search(/\d/) < 0){
+            $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
+          }
+          if (data.game_completed){
+            $tictactoeGameOver = true
+          }
         }
-      }
-    });
+      });
+    }
   }); // end of tictactoe move
 
 });
