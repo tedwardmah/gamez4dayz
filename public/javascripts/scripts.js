@@ -76,10 +76,26 @@ function handleGameOver(winner) {
   buildGameResultNavbar("/tictactoe", $tictactoeContainer);
 }
 
-function highlightWinningSpaces(winning_spaces){
+function highlightWinningSpaces(winning_spaces, winner){
   var $tictactoeSpaces = $('.tictactoe-space');
   $(winning_spaces.split('')).each(function(idx, space_index){
-    $($tictactoeSpaces[space_index]).toggleClass('highlighted')
+    if (winner === "X"){
+      // $($tictactoeSpaces[space_index]).toggleClass('highlighted')
+      $($tictactoeSpaces[space_index]).css("border-color", "purple");
+    } else {
+      $($tictactoeSpaces[space_index]).css("border-color", "chartreuse");
+    }
+  });
+}
+
+function colorXsAndOs(){
+  $('.tictactoe-space').each(function(space_index, space){
+    var $spaceP = $(space.children[0])
+    if ($spaceP.text() === "X"){
+      $spaceP.css("color", "purple")
+    } else if ($spaceP.text() === "O"){
+      $spaceP.css("color", "chartreuse")
+    }
   });
 }
 
@@ -88,6 +104,7 @@ function highlightWinningSpaces(winning_spaces){
 $(function(){
   console.log("Hey there ;)");
   setHangmanConstants();
+  colorXsAndOs()
 
   // guess functionality for hangman
   $(".hangman-submit").on('click', function(e){
@@ -127,6 +144,7 @@ $(function(){
         success: function(data) {
           console.log(data)
           updateTictactoeBoard(data.new_board_state);
+          colorXsAndOs();
           updateTictactoeTurn(data.player1_turn);
           if (clickedSpace.search(/\d/) >= 0){
             $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
@@ -134,7 +152,7 @@ $(function(){
           if (data.game_completed){
             $tictactoeGameOver = true;
             handleGameOver(data.winner);
-            highlightWinningSpaces(data.winning_spaces);
+            highlightWinningSpaces(data.winning_spaces, data.winner);
           }
         }
       });

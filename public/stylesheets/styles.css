@@ -146,12 +146,8 @@ body {
   height: 60px;
   width: 60px;
   margin: 5px 2px;
-  background-color: lightgrey;
-  border: 5px solid lightgrey;
-}
-
-.highlighted {
-  border: 5px solid #1abc9c;
+  background-color: grey;
+  border: 5px solid grey;
 }
 
 .tictactoe-game-board p {
@@ -163,14 +159,6 @@ body {
   word-spacing: 0;
   color: black;
   font-weight: bold;
-}
-
-.is-o p {
-
-}
-
-.is-x p {
-
 }
 
 .hidden p {
