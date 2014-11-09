@@ -128,14 +128,14 @@ $(function(){
   console.log("Hey there ;)");
   setHangmanConstants();
   colorXsAndOs();
-  hangmanGuessedLetters = $($(".hangman-form")[0]).data()['guessedLetters'];
 
   // guess functionality for hangman
   $(".hangman-submit").on('click', function(e){
     e.preventDefault();
+    hangmanGuessedLetters = $($(".hangman-form")[0]).data()['guessedLetters'];
     var guessedLetter = $(".hangman-guess").val().toLowerCase();
     if (validHangmanGuess(guessedLetter)){
-      hangmanGuessedLetters = (hangmanGuessedLetters + guessedLetter);
+      $($(".hangman-form")[0]).data()['guessedLetters'] +=  guessedLetter;
       $.ajax({
         url: $(".hangman-form").attr("action"),
         method: 'POST',
