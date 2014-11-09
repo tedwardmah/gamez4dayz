@@ -55,16 +55,48 @@ body {
   outline: none;
 }
 
-.gamez-menu ul {
-  list-style-type: none;
+.gamez-menu {
+  padding-top: 40px;
 }
 
-.gamez-menu li {
+.game-selector {
   display: inline-block;
-  margin: 0 10px;
+  margin: 0 20px;
+  background-color: #1abc9c;
+  border: 3px solid #1abc9c;
+  border-radius: 5px;
 }
 
-.gamez-menu a {
+.game-selector:hover {
+  border-color: white;
+}
+
+.game-selector h3 {
+  margin: 0;
+  margin-top: 15px;
+}
+
+.game-selector a {
+  color: white;
+  text-decoration: none;
+}
+
+.game-selector img {
+  width: 200px;
+  border: 2px solid black;
+  vertical-align: middle;
+}
+
+.game-selector-imageframe {
+  height: 250px;
+  width: 250px;
+  line-height: 250px;
+  background-color: rgb(250, 250, 250);
+  border-radius: 10px;
+  margin: 15px;
+}
+
+/*.gamez-menu a {
   color: white;
   text-decoration: none;
   padding: 5px 10px;
@@ -75,7 +107,7 @@ body {
 
 .gamez-menu a:hover {
   border: 2px solid white;
-}
+}*/
 
 /********* hangman stuff ***********/
 
@@ -103,8 +135,27 @@ body {
   letter-spacing: .5em;
 }
 
+.hangman-form input[type="text"] {
+  font-size: 1.45em;
+  text-align: center;
+}
+
+.hangman-form input[type="text"]:focus {
+  outline: none;
+}
+
+.hangman-submit {
+  color: white;
+  background-color:  #1abc9c;
+  border: 2px solid #1abc9c;
+  padding: 5px;
+  vertical-align: top;
+  margin-left: 10px;
+}
+
 .game-result-navbar ul {
   margin: 0;
+  padding: 0;
   list-style-type: none;
 }
 

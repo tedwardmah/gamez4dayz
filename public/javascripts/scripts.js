@@ -33,7 +33,7 @@ function hangmanGameOver(win_boolean){
   if (win_boolean){
     $gameResultMessage = $('<h2>').text("You win!!!");
   } else {
-    $gameResultMessage = $('<h2>').text("You lose dummy!!!");
+    $gameResultMessage = $('<h2>').text("You lose...");
   }
   $hangmanContainer.append($gameResultMessage);
   buildGameResultNavbar("/hangman", $hangmanContainer);
