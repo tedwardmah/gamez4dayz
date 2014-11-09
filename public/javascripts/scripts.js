@@ -4,8 +4,9 @@ $hangmanContainer = null;
 $hangmanWord = null;
 $hangmanTries = null;
 $hangmanForm = null;
-$tictactoeGameOver = false
+$tictactoeGameOver = false;
 var hangmanGuessedLetters;
+var player1Turn = true;
 
 // Hangman stufffffff **************************************************
 
@@ -54,6 +55,28 @@ function buildGameResultNavbar(newGameRoute, targetContainer){
   targetContainer.append($gameResultUl);
 }
 
+function validHangmanGuess(guessedLetter){
+  removeHangmanEntryError();
+  if (guessedLetter.search(/^[-a-zA-Z]$/) >= 0) { // guess is a valid letter or hyphen
+    if (hangmanGuessedLetters.indexOf(guessedLetter) >= 0){
+      displayHangmanEntryError("'" + guessedLetter.toUpperCase() + "' was already guessed!");
+    }
+    return true
+  } else {
+    displayHangmanEntryError("Invalid guess...enter a single letter or hyphen");
+    return false;
+  }
+}
+
+function displayHangmanEntryError(message){
+  $errorMessageElement = $('<h3>').text(message).attr("id", "hangman-error-message");
+  $hangmanContainer.append($errorMessageElement);
+}
+
+function removeHangmanEntryError(){
+  $("#hangman-error-message").remove();
+}
+
 // tic-tac-toe **************************************************
 
 function updateTictactoeBoard(board_state){
@@ -64,16 +87,16 @@ function updateTictactoeBoard(board_state){
 }
 
 function updateTictactoeTurn(player1_turn) {
-  $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move")
+  $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move");
 }
 
 function handleGameOver(winner) {
   if (winner === "Draw!"){ 
-    $('#tictactoe-player-move').text("Draw!")
+    $('#tictactoe-player-move').text("Draw!");
   } else {
-    $('#tictactoe-player-move').text(winner + " wins!")
+    $('#tictactoe-player-move').text(winner + " wins!");
   }
-  var $tictactoeContainer = $($(".tictactoe-container")[0])
+  var $tictactoeContainer = $($(".tictactoe-container")[0]);
   buildGameResultNavbar("/tictactoe", $tictactoeContainer);
 }
 
@@ -100,26 +123,16 @@ function colorXsAndOs(){
   });
 }
 
-function validHangmanGuess(guessedLetter){
-  removeHangmanEntryError();
-  if (guessedLetter.search(/^[-a-zA-Z]$/) >= 0) { // guess is a valid letter or hyphen
-    if (hangmanGuessedLetters.indexOf(guessedLetter) >= 0){
-      displayHangmanEntryError("'" + guessedLetter.toUpperCase() + "' was already guessed!");
+function getTictactoeSpaceColor($space){
+  if ($space.text().search(/\d/) >= 0){
+    if ($('#tictactoe-player-move').text() === "X's move"){
+      return "purple";
+    } else {
+      return "chartreuse";
     }
-    return true
   } else {
-    displayHangmanEntryError("Invalid guess...enter a single letter or hyphen");
-    return false;
+    return "grey";
   }
-}
-
-function displayHangmanEntryError(message){
-  $errorMessageElement = $('<h3>').text(message).attr("id", "hangman-error-message");
-  $hangmanContainer.append($errorMessageElement);
-}
-
-function removeHangmanEntryError(){
-  $("#hangman-error-message").remove();
 }
 
 // after erythang is loaded...
@@ -158,6 +171,7 @@ $(function(){
   $('.tictactoe-space').on('click', function(e){
     if (!$tictactoeGameOver){
       var $selectedSpace = $(this);
+      $(this).css("border-color", "grey");
       var $selectedP = $($selectedSpace.children()[0]);
       var clickedSpace = $selectedP.text();
       var gameID = $("#tictactoe-game-id").attr("value");
@@ -169,7 +183,6 @@ $(function(){
           space_num: clickedSpace,
         },
         success: function(data) {
-          console.log(data)
           updateTictactoeBoard(data.new_board_state);
           colorXsAndOs();
           updateTictactoeTurn(data.player1_turn);
@@ -185,6 +198,21 @@ $(function(){
       });
     }
   }); // end of tictactoe move
+
+  //tic-tac-toe pre-move space highlighting 
+  $('.tictactoe-space').on('mouseover', function(e){
+    if (!$tictactoeGameOver){
+      color = getTictactoeSpaceColor($(this));
+      $(this).css("border-color", color);
+    }
+  });
+
+  $('.tictactoe-space').on('mouseout', function(e){
+    if (!$tictactoeGameOver){
+      $(this).css("border-color", "grey");
+    }
+  });
+  //end of space-highlighting
 
 });
 
