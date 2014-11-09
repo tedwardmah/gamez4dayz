@@ -5,6 +5,7 @@ $hangmanWord = null;
 $hangmanTries = null;
 $hangmanForm = null;
 $tictactoeGameOver = false
+var hangmanGuessedLetters;
 
 // Hangman stufffffff **************************************************
 
@@ -102,15 +103,18 @@ function colorXsAndOs(){
 function validHangmanGuess(guessedLetter){
   removeHangmanEntryError();
   if (guessedLetter.search(/^[-a-zA-Z]$/) >= 0) { // guess is a valid letter or hyphen
+    if (hangmanGuessedLetters.indexOf(guessedLetter) >= 0){
+      displayHangmanEntryError("'" + guessedLetter.toUpperCase() + "' was already guessed!");
+    }
     return true
   } else {
-    displayHangmanEntryError();
+    displayHangmanEntryError("Invalid guess...enter a single letter or hyphen");
     return false;
   }
 }
 
-function displayHangmanEntryError(){
-  $errorMessageElement = $('<h3>').text("Invalid guess...enter a single letter or hyphen").attr("id", "hangman-error-message");
+function displayHangmanEntryError(message){
+  $errorMessageElement = $('<h3>').text(message).attr("id", "hangman-error-message");
   $hangmanContainer.append($errorMessageElement);
 }
 
@@ -123,13 +127,15 @@ function removeHangmanEntryError(){
 $(function(){
   console.log("Hey there ;)");
   setHangmanConstants();
-  colorXsAndOs()
+  colorXsAndOs();
+  hangmanGuessedLetters = $($(".hangman-form")[0]).data()['guessedLetters'];
 
   // guess functionality for hangman
   $(".hangman-submit").on('click', function(e){
     e.preventDefault();
     var guessedLetter = $(".hangman-guess").val().toLowerCase();
     if (validHangmanGuess(guessedLetter)){
+      hangmanGuessedLetters = (hangmanGuessedLetters + guessedLetter);
       $.ajax({
         url: $(".hangman-form").attr("action"),
         method: 'POST',
