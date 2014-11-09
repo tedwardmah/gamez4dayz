@@ -27,6 +27,7 @@ class HangmanController < ApplicationController
         last_guess_correct: game.last_guess_correct, #i think this is unnecessary
         game_completed: game.game_completed,
         win: game.win,
+        guessed_letters: game.guessed_letters,
         }.to_json
     end
   end

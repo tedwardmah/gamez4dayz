@@ -99,6 +99,25 @@ function colorXsAndOs(){
   });
 }
 
+function validHangmanGuess(guessedLetter){
+  removeHangmanEntryError();
+  if (guessedLetter.search(/^[-a-zA-Z]$/) >= 0) { // guess is a valid letter or hyphen
+    return true
+  } else {
+    displayHangmanEntryError();
+    return false;
+  }
+}
+
+function displayHangmanEntryError(){
+  $errorMessageElement = $('<h3>').text("Invalid guess...enter a single letter or hyphen").attr("id", "hangman-error-message");
+  $hangmanContainer.append($errorMessageElement);
+}
+
+function removeHangmanEntryError(){
+  $("#hangman-error-message").remove();
+}
+
 // after erythang is loaded...
 
 $(function(){
@@ -110,21 +129,23 @@ $(function(){
   $(".hangman-submit").on('click', function(e){
     e.preventDefault();
     var guessedLetter = $(".hangman-guess").val().toLowerCase();
-    $.ajax({
-      url: $(".hangman-form").attr("action"),
-      method: 'POST',
-      dataType: "json",
-      data: {
-        guess: guessedLetter,
-      },
-      success: function(data) {
-        updateHangmanHTML(data.new_display, data.tries);
-        updateHangmanImg(data.tries);
-        if (data.game_completed) {
-          hangmanGameOver(data.win);
+    if (validHangmanGuess(guessedLetter)){
+      $.ajax({
+        url: $(".hangman-form").attr("action"),
+        method: 'POST',
+        dataType: "json",
+        data: {
+          guess: guessedLetter,
+        },
+        success: function(data) {
+          updateHangmanHTML(data.new_display, data.tries);
+          updateHangmanImg(data.tries);
+          if (data.game_completed) {
+            hangmanGameOver(data.win);
+          }
         }
-      }
-    });
+      });
+    }
   }); // end of hangman guess function
 
   //move-making functionality for tictactoe
