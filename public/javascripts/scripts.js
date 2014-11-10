@@ -145,7 +145,7 @@ function colorXsAndOs(){
 
 function getTictactoeSpaceColor($space){
   if ($space.text().search(/\d/) >= 0){
-    if ($('#tictactoe-player-move').text() === "X's move"){
+    if ($('#current-player-turn').attr("value") === "true"){
       return "purple";
     } else {
       return "chartreuse";
