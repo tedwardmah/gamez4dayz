@@ -23,24 +23,30 @@ class TicTacToeController < ApplicationController
 
   get '/replay' do
     last_game = TictactoeGame.find(params[:last_game_id].to_i)
-    new_player1 = last_game.player2
-    new_player2 = last_game.player1
-    game = TictactoeGame.create({
-      user_id: new_player1.id
-      })
-    player1_play = Play.create({
-      user_id: new_player1.id,
-      opponent_id: new_player2.id,
-      tictactoe_game_id: game.id,
-      is_player_1: true,
-      })
-    player2_play = Play.create({
-      user_id: new_player2.id,
-      opponent_id: new_player1.id,
-      tictactoe_game_id: game.id,
-      is_player_1: false,
-      })
-    redirect "/tictactoe/#{game.id}"
+    last_opponent = last_game.opponent(current_user.id)
+    if !current_user.has_current_ttt_game_with?(last_opponent)
+      new_player1 = last_game.player2
+      new_player2 = last_game.player1
+      game = TictactoeGame.create({
+        user_id: new_player1.id
+        })
+      player1_play = Play.create({
+        user_id: new_player1.id,
+        opponent_id: new_player2.id,
+        tictactoe_game_id: game.id,
+        is_player_1: true,
+        })
+      player2_play = Play.create({
+        user_id: new_player2.id,
+        opponent_id: new_player1.id,
+        tictactoe_game_id: game.id,
+        is_player_1: false,
+        })
+      redirect "/tictactoe/#{game.id}"
+    else
+      current_game = current_user.current_ttt_game_with(last_opponent)
+      redirect "/tictactoe/#{current_game.id}"
+    end
   end
 
   get '/users/:user_id' do
