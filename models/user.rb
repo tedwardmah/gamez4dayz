@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: true
 
   has_many :hangman_games
-  has_many :tictactoe_games
+  has_many :plays
+  has_many :tictactoe_games, :through => :plays
 
   def password
     @password ||= Password.new(self.password_hash)

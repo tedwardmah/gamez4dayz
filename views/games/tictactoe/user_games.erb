@@ -1,0 +1,11 @@
+<h2><%= current_user.username %>'s Tictactoe Games</h2>
+
+<ul>
+  <% if !@plays.empty? %>
+    <% @plays.each do |play| %>
+    <li>
+      <%= play.tictactoe_game_id %>
+    </li>
+    <% end %>
+  <% end %>
+</ul>

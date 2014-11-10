@@ -5,15 +5,34 @@ class TicTacToeController < ApplicationController
   end
 
   get '/' do
-    if game_in_progress = TictactoeGame.find_by(user_id: current_user.id, game_completed: false)
-      @game = game_in_progress
-    else
-      @game = TictactoeGame.create({
-        user_id: current_user.id
-        })
-    end
+    #list all tictactoe games
+
+    redirect '/'
+  end
+
+  get '/new' do
+    game = TictactoeGame.create({
+      user_id: current_user.id,
+      })
+    player1_play = Play.create({
+      user_id: current_user.id,
+      tictactoe_game_id: game.id,
+      is_player_1: true,
+      })
+    redirect "/tictactoe/users/#{current_user.id}"
+  end
+
+  get '/users/:user_id' do
+    user = User.find(params[:user_id])
+    @plays = user.plays
+    binding.pry
+    erb :'games/tictactoe/user_games'
+  end
+
+  get '/:id' do
+    @game = TictactoeGame.find(params[:id])
     @game_display = @game.render_board_display
-    erb :'games/tictactoe'
+    erb :'games/tictactoe/tictactoe'
   end
 
   post '/:id/move' do
