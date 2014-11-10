@@ -3,10 +3,38 @@ class TictactoeGame < ActiveRecord::Base
   has_many :plays
   has_many :users, :through => :plays
 
+  # USER STUFF
   def matched?
     self.plays.count == 2 ? true : false
   end
 
+  def player1
+    self.plays.where(is_player_1: true)[0].user
+  end
+
+  def player2
+    self.plays.where(is_player_1: false)[0].user
+  end
+
+  def player1_play
+    self.plays.where(is_player_1: true)[0]
+  end
+
+  def player2_play
+    self.plays.where(is_player_1: false)[0]
+  end
+
+  def opponent(current_user_id)
+    all_plays = self.plays
+    opponent_id = nil
+    all_plays.each do |play|
+      opponent_id = play.user.id if play.user.id != current_user_id
+    end
+    User.find(opponent_id)
+  end
+
+
+  # ACTUAL GAME STUFF
   def check_game_over
     player_combo = self.player1_turn ? o_moves.chars.sort.join : x_moves.chars.sort.join
     winning_combos = ["012", "345", "678", "036", "147", "258", "048", "246"]
@@ -20,6 +48,15 @@ class TictactoeGame < ActiveRecord::Base
         game_completed: true,
         winner: winner,
         })
+      if self.player1_turn
+        player2_play.update({
+          win: true
+        })
+      else
+        player1_play.update({
+          win: true
+          })
+      end
     elsif (self.o_moves + self.x_moves).length == 9  #check for draw
       self.update({
         game_completed: true,

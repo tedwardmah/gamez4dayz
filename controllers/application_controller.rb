@@ -19,4 +19,8 @@ class ApplicationController < Sinatra::Base
     erb :games
   end
 
+  get '/console' do
+    binding.pry
+  end
+
 end

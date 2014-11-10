@@ -5,7 +5,6 @@ class TicTacToeController < ApplicationController
   end
 
   get '/' do
-    #list all tictactoe games
     @games = TictactoeGame.where(game_completed: false)
     erb :'games/tictactoe/lobbies'
   end

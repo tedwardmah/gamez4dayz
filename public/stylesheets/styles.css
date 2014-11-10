@@ -187,6 +187,10 @@ body {
   background-color: black;
 }
 
+.tictactoe-container h3 {
+  color: white;
+}
+
 .tictactoe-game-board {
   /*  background-color: blue;*/
 }
