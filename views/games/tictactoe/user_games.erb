@@ -7,7 +7,7 @@
   <% @plays.each do |play| %>
     <% if !play.tictactoe_game.game_completed %>
     <li>
-      <a href="/tictactoe/<%= play.tictactoe_game_id %>"><%= play.tictactoe_game_id %></a>
+      <a href="/tictactoe/<%= play.tictactoe_game_id %>"><%= play.tictactoe_game.matchup %></a>
     </li>
     <% end %>
   <% end %>

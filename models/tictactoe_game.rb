@@ -33,6 +33,15 @@ class TictactoeGame < ActiveRecord::Base
     User.find(opponent_id)
   end
 
+  def matchup
+    players = []
+    self.plays.each do |play|
+      user = User.find(play.user_id)
+      players << user.username
+    end
+    players.join(" vs. ")
+  end
+
 
   # ACTUAL GAME STUFF
   def check_game_over
