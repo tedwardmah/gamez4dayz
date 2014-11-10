@@ -4,9 +4,7 @@ $hangmanContainer = null;
 $hangmanWord = null;
 $hangmanTries = null;
 $hangmanForm = null;
-$tictactoeGameOver = false;
 var hangmanGuessedLetters;
-var player1Turn = true;
 
 // Hangman stufffffff **************************************************
 
@@ -83,11 +81,15 @@ function updateTictactoeBoard(board_state){
   board_state_characters = board_state.split('');
   $('.tictactoe-space').each(function(space_index, space){
     $(space.children[0]).text(board_state_characters[space_index]);
+    if ($(space.children[0]).text().search(/\d/) < 0){
+      $(space).attr("class",'tictactoe-space');
+    }
   });
 }
 
 function updateTictactoeTurn(player1_turn) {
   $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move");
+  player1Turn = player1_turn;
 }
 
 function handleGameOver(winner) {
@@ -134,91 +136,6 @@ function getTictactoeSpaceColor($space){
     return "grey";
   }
 }
-
-// after erythang is loaded...
-
-$(function(){
-  console.log("Hey there ;)");
-  setHangmanConstants();
-  colorXsAndOs();
-
-  // guess functionality for hangman
-  $(".hangman-submit").on('click', function(e){
-    e.preventDefault();
-    hangmanGuessedLetters = $($(".hangman-form")[0]).data()['guessedLetters'];
-    var guessedLetter = $(".hangman-guess").val().toLowerCase();
-    if (validHangmanGuess(guessedLetter)){
-      $($(".hangman-form")[0]).data()['guessedLetters'] +=  guessedLetter;
-      $.ajax({
-        url: $(".hangman-form").attr("action"),
-        method: 'POST',
-        dataType: "json",
-        data: {
-          guess: guessedLetter,
-        },
-        success: function(data) {
-          updateHangmanHTML(data.new_display, data.tries);
-          updateHangmanImg(data.tries);
-          if (data.game_completed) {
-            hangmanGameOver(data.win);
-          }
-        }
-      });
-    }
-  }); // end of hangman guess function
-
-  //move-making functionality for tictactoe
-  $('.tictactoe-space').on('click', function(e){
-    if (!$tictactoeGameOver){
-      var $selectedSpace = $(this);
-      $(this).css("border-color", "grey");
-      var $selectedP = $($selectedSpace.children()[0]);
-      var clickedSpace = $selectedP.text();
-      var gameID = $("#tictactoe-game-id").attr("value");
-      $.ajax({
-        url: ('/tictactoe/' + gameID + "/move"),
-        method: 'POST',
-        dataType: "json",
-        data: {
-          space_num: clickedSpace,
-        },
-        success: function(data) {
-          updateTictactoeBoard(data.new_board_state);
-          colorXsAndOs();
-          updateTictactoeTurn(data.player1_turn);
-          if (clickedSpace.search(/\d/) >= 0){
-            $($('.tictactoe-space')[clickedSpace]).toggleClass('hidden');
-          }
-          if (data.game_completed){
-            $tictactoeGameOver = true;
-            handleGameOver(data.winner);
-            highlightWinningSpaces(data.winning_spaces, data.winner);
-          }
-        }
-      });
-    }
-  }); // end of tictactoe move
-
-  //tic-tac-toe pre-move space highlighting 
-  $('.tictactoe-space').on('mouseover', function(e){
-    if (!$tictactoeGameOver){
-      color = getTictactoeSpaceColor($(this));
-      $(this).css("border-color", color);
-    }
-  });
-
-  $('.tictactoe-space').on('mouseout', function(e){
-    if (!$tictactoeGameOver){
-      $(this).css("border-color", "grey");
-    }
-  });
-  //end of space-highlighting
-
-});
-
-
-
-
 
 
 

@@ -10,3 +10,35 @@
   </div>
   <img src="/images/hangman/hangman_<%= @game.tries %>.png" alt="hangman image" class="hangman-img">
 </div>
+
+
+<script>
+$(function() {
+  setHangmanConstants();
+  // guess functionality for hangman
+  $(".hangman-submit").on('click', function(e){
+    e.preventDefault();
+    hangmanGuessedLetters = $($(".hangman-form")[0]).data()['guessedLetters'];
+    var guessedLetter = $(".hangman-guess").val().toLowerCase();
+    if (validHangmanGuess(guessedLetter)){
+      $($(".hangman-form")[0]).data()['guessedLetters'] +=  guessedLetter;
+      $.ajax({
+        url: $(".hangman-form").attr("action"),
+        method: 'POST',
+        dataType: "json",
+        data: {
+          guess: guessedLetter,
+        },
+        success: function(data) {
+          updateHangmanHTML(data.new_display, data.tries);
+          updateHangmanImg(data.tries);
+          if (data.game_completed) {
+            hangmanGameOver(data.win);
+          }
+        }
+      });
+    }
+  }); // end of hangman guess function
+
+});
+</script>

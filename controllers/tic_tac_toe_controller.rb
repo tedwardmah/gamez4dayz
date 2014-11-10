@@ -46,6 +46,18 @@ class TicTacToeController < ApplicationController
     end
   end
 
+  get '/:id/gamestate' do
+    content_type :json
+    game = TictactoeGame.find(params[:id])
+    {
+      new_board_state: game.board_state,
+      game_completed: game.game_completed,
+      winner: game.winner,
+      player1_turn: game.player1_turn
+      # winning_spaces: winning_spaces
+      }.to_json
+  end
+
   get '/:id' do
     @game = TictactoeGame.find(params[:id])
     @game_display = @game.render_board_display

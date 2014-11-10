@@ -1,5 +1,7 @@
 <div class="tictactoe-container">
   <input type="hidden" id="tictactoe-game-id" value="<%= @game.id %>">
+  <input type="hidden" id="current-player-is-player-1" value="<%= @game.player1 == current_user ? true : false%>">
+  <input type="hidden" id="current-player-turn" value="<%= @game.player1_turn %>">
   <h2 id="tictactoe-player-move"><%= @game.player1_turn ? "X" : "O" %>'s move</h2>
   <h3>Player: <%= current_user.username %></h3>
   <% if @game.matched? %>
@@ -17,3 +19,106 @@
     <% end %>
   </div>
 </div>
+
+<script>
+$tictactoeGameOver = false;
+var player1Turn = $("#current-player-turn").attr("value") === "true" ? true : false;
+var thisPlayerIsPlayer1 = $("#current-player-is-player-1").attr("value") === "true" ? true : false;
+var currentUserCanMove
+
+function updateMoveability(){
+  if (player1Turn && thisPlayerIsPlayer1) {
+    currentUserCanMove = true;
+  } else if (!player1Turn && !thisPlayerIsPlayer1) {
+    currentUserCanMove = true;
+  } else {
+    currentUserCanMove = false;
+  }
+}
+
+$(function(){
+  console.log("Hey there ;)");
+  console.log(thisPlayerIsPlayer1 ? "Player1" : "Player2")
+  colorXsAndOs();
+  updateMoveability();
+
+  if ($("#tictactoe-game-id").length > 0){  
+    setInterval(function(){
+      var gameID = $("#tictactoe-game-id").attr("value");
+      $.ajax({
+        url: ('/tictactoe/' + gameID + "/gamestate"),
+        method: 'GET',
+        dataType: "json",
+        success: function(data){
+          console.log(data)
+          updateTictactoeBoard(data.new_board_state);
+          colorXsAndOs();
+          updateTictactoeTurn(data.player1_turn);
+          updateMoveability();
+          console.log("current user can move:", currentUserCanMove);
+          console.log("player1's turn?:", player1Turn);
+          if (data.game_completed){
+            if (!$tictactoeGameOver){
+              $tictactoeGameOver = true;
+              handleGameOver(data.winner);
+              highlightWinningSpaces(data.winning_spaces, data.winner);
+            }
+          }
+        }
+      });
+    }, 2000);
+  }
+
+  //move-making functionality for tictactoe
+  $('.tictactoe-space').on('click', function(e){
+    if (!$tictactoeGameOver && currentUserCanMove){
+      var $selectedSpace = $(this);
+      $(this).css("border-color", "grey");
+      var $selectedP = $($selectedSpace.children()[0]);
+      var clickedSpace = $selectedP.text();
+      var gameID = $("#tictactoe-game-id").attr("value");
+      $.ajax({
+        url: ('/tictactoe/' + gameID + "/move"),
+        method: 'POST',
+        dataType: "json",
+        data: {
+          space_num: clickedSpace,
+        },
+        success: function(data) {
+          updateTictactoeBoard(data.new_board_state);
+          colorXsAndOs();
+          updateTictactoeTurn(data.player1_turn);
+          currentUserCanMove = false
+          if (clickedSpace.search(/\d/) >= 0){
+            $($('.tictactoe-space')[clickedSpace]).attr("class", 'tictactoe-space');
+          }
+          if (data.game_completed){
+            $tictactoeGameOver = true;
+            handleGameOver(data.winner);
+            highlightWinningSpaces(data.winning_spaces, data.winner);
+          }
+        }
+      });
+    }
+  }); // end of tictactoe move
+
+  //tic-tac-toe pre-move space highlighting
+  $('.tictactoe-space').on('mouseover', function(e){
+    if (!$tictactoeGameOver && currentUserCanMove){
+      color = getTictactoeSpaceColor($(this));
+      $(this).css("border-color", color);
+    }
+  });
+
+  $('.tictactoe-space').on('mouseout', function(e){
+    if (!$tictactoeGameOver && currentUserCanMove){
+      $(this).css("border-color", "grey");
+    }
+  });
+  //end of space-highlighting
+
+
+
+});
+
+</script>
