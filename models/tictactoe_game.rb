@@ -1,6 +1,11 @@
 class TictactoeGame < ActiveRecord::Base
+  belongs_to :user
   has_many :plays
   has_many :users, :through => :plays
+
+  def matched?
+    self.plays.count == 2 ? true : false
+  end
 
   def check_game_over
     player_combo = self.player1_turn ? o_moves.chars.sort.join : x_moves.chars.sort.join

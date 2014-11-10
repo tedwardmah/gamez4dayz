@@ -1,11 +1,15 @@
-<h2><%= current_user.username %>'s Tictactoe Games</h2>
+<h2><%= current_user.username %>'s In-Progress Tictactoe Games</h2>
 
+<a href="/tictactoe/new">Create New Game!</a>
+
+<% if !@plays.empty? %>
 <ul>
-  <% if !@plays.empty? %>
-    <% @plays.each do |play| %>
+  <% @plays.each do |play| %>
+    <% if !play.tictactoe_game.game_completed %>
     <li>
-      <%= play.tictactoe_game_id %>
+      <a href="/tictactoe/<%= play.tictactoe_game_id %>"><%= play.tictactoe_game_id %></a>
     </li>
     <% end %>
   <% end %>
 </ul>
+<% end %>

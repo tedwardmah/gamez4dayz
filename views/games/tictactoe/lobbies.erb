@@ -1,0 +1,17 @@
+<h2>Tictactoe Lobbies!</h2>
+
+<h3>Select a game below to join</h3>
+<a href="/tictactoe/users/<%= current_user.id %>">Show my games</a>
+
+
+<% if !@games.empty? %>
+<ul>
+  <% @games.each do |game| %>
+    <% if !game.matched? && game.user.id != current_user.id %>
+    <li>
+      <a href="/tictactoe/join/<%= game.id %>"><%= game.user.username %></a>
+    </li>
+    <% end %>
+  <% end %>
+</ul>
+<% end %>
