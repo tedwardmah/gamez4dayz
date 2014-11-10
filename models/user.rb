@@ -17,6 +17,13 @@ class User < ActiveRecord::Base
     self.password_hash = @password
   end
 
+  def has_unmatched_ttt_game?
+    current_players_open_games = self.tictactoe_games.where(game_completed: false)
+    current_players_open_games.any? do |game|
+      !game.matched?
+    end
+  end
+
   def has_current_ttt_game_with?(opponent)
     has_current_game = false
     current_players_open_games = self.tictactoe_games.where(game_completed: false)

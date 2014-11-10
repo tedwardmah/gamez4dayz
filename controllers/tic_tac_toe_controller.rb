@@ -10,15 +10,19 @@ class TicTacToeController < ApplicationController
   end
 
   get '/new' do
-    game = TictactoeGame.create({
-      user_id: current_user.id,
-      })
-    player1_play = Play.create({
-      user_id: current_user.id,
-      tictactoe_game_id: game.id,
-      is_player_1: true,
-      })
-    redirect "/tictactoe/users/#{current_user.id}"
+    if !current_user.has_unmatched_ttt_game?
+      game = TictactoeGame.create({
+        user_id: current_user.id,
+        })
+      player1_play = Play.create({
+        user_id: current_user.id,
+        tictactoe_game_id: game.id,
+        is_player_1: true,
+        })
+      redirect "/tictactoe/users/#{current_user.id}"
+    else
+      redirect "/tictactoe/users/#{current_user.id}"
+    end
   end
 
   get '/replay' do
