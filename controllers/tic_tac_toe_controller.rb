@@ -61,7 +61,10 @@ class TicTacToeController < ApplicationController
 
   get '/join/:id' do
     game = TictactoeGame.find(params[:id])
-    if !game.matched? #prevents players from joining a game that is already matched
+    if current_user.has_current_ttt_game_with?(game.user)
+      current_game = current_user.current_ttt_game_with(game.user)
+      redirect "/tictactoe/#{current_game.id}"
+    elsif !game.matched? #prevents players from joining a game that is already matched or a second game with a given user
       player1_play = game.plays.first
       player1_play.update({
         opponent_id: current_user.id,
