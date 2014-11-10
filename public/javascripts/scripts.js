@@ -87,8 +87,8 @@ function updateTictactoeBoard(board_state){
   });
 }
 
-function updateTictactoeTurn(player1_turn) {
-  $('#tictactoe-player-move').text(player1_turn ? "X's move" : "O's move");
+function updateTictactoeTurn(player1_turn, player1, player2) {
+  $('#tictactoe-player-move').text((player1_turn ? player1 : player2) + "'s move...");
   player1Turn = player1_turn;
 }
 

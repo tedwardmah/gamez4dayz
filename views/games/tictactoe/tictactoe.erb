@@ -2,10 +2,13 @@
   <input type="hidden" id="tictactoe-game-id" value="<%= @game.id %>">
   <input type="hidden" id="current-player-is-player-1" value="<%= @game.player1 == current_user ? true : false%>">
   <input type="hidden" id="current-player-turn" value="<%= @game.player1_turn %>">
-  <h2 id="tictactoe-player-move"><%= @game.player1_turn ? "X" : "O" %>'s move</h2>
-  <h3>Player: <%= current_user.username %></h3>
+  <input type="hidden" id="player1" value="<%= @game.player1.username %>">
+  <input type="hidden" id="player2" value="<%= @game.matched? ? @game.player2.username : 'Player 2' %>">
   <% if @game.matched? %>
   <h3>Opponent: <%= @game.opponent(current_user.id).username%></h3>
+  <h2 id="tictactoe-player-move"><%= @game.player1_turn ? @game.player1.username : @game.player2.username %>'s move...</h2>
+  <% else %>
+  <h2 id="tictactoe-player-move"><%= @game.player1_turn ? @game.player1.username : 'Player 2' %>'s move...</h2>
   <% end %>
 
 
@@ -25,6 +28,8 @@ $tictactoeGameOver = false;
 var player1Turn = $("#current-player-turn").attr("value") === "true" ? true : false;
 var thisPlayerIsPlayer1 = $("#current-player-is-player-1").attr("value") === "true" ? true : false;
 var currentUserCanMove
+var player1 = $("#player1").attr("value")
+var player2 = $("#player2").attr("value")
 
 function updateMoveability(){
   if (player1Turn && thisPlayerIsPlayer1) {
@@ -53,7 +58,7 @@ $(function(){
           updateTictactoeBoard(data.new_board_state);
           colorXsAndOs();
           if (!data.game_completed){
-            updateTictactoeTurn(data.player1_turn);
+            updateTictactoeTurn(data.player1_turn, player1, player2);
             updateMoveability();
           } else {
             if (!$tictactoeGameOver){
