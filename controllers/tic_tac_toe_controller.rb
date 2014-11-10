@@ -21,6 +21,28 @@ class TicTacToeController < ApplicationController
     redirect "/tictactoe/users/#{current_user.id}"
   end
 
+  get '/replay' do
+    last_game = TictactoeGame.find(params[:last_game_id].to_i)
+    new_player1 = last_game.player2
+    new_player2 = last_game.player1
+    game = TictactoeGame.create({
+      user_id: new_player1.id
+      })
+    player1_play = Play.create({
+      user_id: new_player1.id,
+      opponent_id: new_player2.id,
+      tictactoe_game_id: game.id,
+      is_player_1: true,
+      })
+    player2_play = Play.create({
+      user_id: new_player2.id,
+      opponent_id: new_player1.id,
+      tictactoe_game_id: game.id,
+      is_player_1: false,
+      })
+    redirect "/tictactoe/#{game.id}"
+  end
+
   get '/users/:user_id' do
     user = User.find(params[:user_id])
     @plays = user.plays
@@ -49,19 +71,24 @@ class TicTacToeController < ApplicationController
   get '/:id/gamestate' do
     content_type :json
     game = TictactoeGame.find(params[:id])
+    winning_spaces = game.get_winning_spaces if game.game_completed
     {
       new_board_state: game.board_state,
       game_completed: game.game_completed,
       winner: game.winner,
-      player1_turn: game.player1_turn
-      # winning_spaces: winning_spaces
+      player1_turn: game.player1_turn,
+      winning_spaces: winning_spaces,
       }.to_json
   end
 
   get '/:id' do
     @game = TictactoeGame.find(params[:id])
-    @game_display = @game.render_board_display
-    erb :'games/tictactoe/tictactoe'
+    if @game.game_completed
+      redirect "/tictactoe"
+    else
+      @game_display = @game.render_board_display
+      erb :'games/tictactoe/tictactoe'
+    end
   end
 
   post '/:id/move' do

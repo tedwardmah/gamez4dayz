@@ -16,6 +16,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/games' do
+    authenticate!
     erb :games
   end
 

@@ -1,8 +1,6 @@
 <div class="main-navbar">
+
   <ul>
-    <li>
-      <a href="/">Home</a>
-    </li>
     <% if current_user %>
     <li>
       <a href="/games">Gamez</a>
@@ -18,7 +16,7 @@
     <li>
       <form action="/sessions" method="post">
         <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Logout">
+        <input type="submit" value="Logout (<%= current_user.username %>)">
       </form>
     </li>
     <% else %>
@@ -30,4 +28,5 @@
     </li>
     <% end %>
   </ul>
+
 </div>

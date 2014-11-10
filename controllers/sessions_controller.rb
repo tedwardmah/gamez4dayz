@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     user = User.find_by(username: params[:username])
     if user && user.password == params[:password]
       session[:current_user] = user.id
-      redirect "/users/#{user.id}"
+      redirect "/games"
     else
       redirect "/sessions/new?try_again='true'"
     end
@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
 
   delete '/' do
     session[:current_user] = nil
-    redirect '/users'
+    redirect '/'
   end
 
 end

@@ -50,17 +50,15 @@ $(function(){
         method: 'GET',
         dataType: "json",
         success: function(data){
-          console.log(data)
           updateTictactoeBoard(data.new_board_state);
           colorXsAndOs();
-          updateTictactoeTurn(data.player1_turn);
-          updateMoveability();
-          console.log("current user can move:", currentUserCanMove);
-          console.log("player1's turn?:", player1Turn);
-          if (data.game_completed){
+          if (!data.game_completed){
+            updateTictactoeTurn(data.player1_turn);
+            updateMoveability();
+          } else {
             if (!$tictactoeGameOver){
               $tictactoeGameOver = true;
-              handleGameOver(data.winner);
+              handleGameOver(data.winner, gameID);
               highlightWinningSpaces(data.winning_spaces, data.winner);
             }
           }
@@ -94,7 +92,7 @@ $(function(){
           }
           if (data.game_completed){
             $tictactoeGameOver = true;
-            handleGameOver(data.winner);
+            handleGameOver(data.winner, gameID);
             highlightWinningSpaces(data.winning_spaces, data.winner);
           }
         }

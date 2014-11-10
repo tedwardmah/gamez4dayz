@@ -92,14 +92,32 @@ function updateTictactoeTurn(player1_turn) {
   player1Turn = player1_turn;
 }
 
-function handleGameOver(winner) {
+function buildTictactoeResultNavbar(targetContainer, lastGameID){
+  $gameResultUl = $("<ul>").attr("class", "game-result-navbar");
+  //replay 'button'
+  $replayLi = $("<li>");
+  $replayAnchor = $("<a>").attr('href', '/tictactoe/replay?last_game_id=' + lastGameID).text("Play Again");
+  //new game 'button'
+  $newGameLi = $("<li>");
+  $newGameAnchor = $("<a>").attr('href', '/tictactoe').text("New Opponent");
+  //back to all gamez 'button'
+  $gamezLi = $("<li>");
+  $gamezAnchor = $("<a>").attr('href', "/games").text("Play a different game");
+  //put it all together...
+  $gameResultUl.append($replayLi.append($replayAnchor));
+  $gameResultUl.append($newGameLi.append($newGameAnchor));
+  $gameResultUl.append($gamezLi.append($gamezAnchor));
+  targetContainer.append($gameResultUl);
+}
+
+function handleGameOver(winner, lastGameID) {
   if (winner === "Draw!"){ 
     $('#tictactoe-player-move').text("Draw!");
   } else {
     $('#tictactoe-player-move').text(winner + " wins!");
   }
   var $tictactoeContainer = $($(".tictactoe-container")[0]);
-  buildGameResultNavbar("/tictactoe", $tictactoeContainer);
+  buildTictactoeResultNavbar($tictactoeContainer, lastGameID);
 }
 
 function highlightWinningSpaces(winning_spaces, winner){
